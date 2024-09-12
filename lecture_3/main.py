@@ -4,7 +4,7 @@ import time
 from worker_fns import writer, worker_with_separate_files, worker_with_global_lock
 
 N_REQUESTS = 77
-N_WORKERS = 25
+N_WORKERS = 50
 BASE_URL = 'https://jsonplaceholder.typicode.com/posts/'
 
 '''
@@ -38,7 +38,6 @@ def run_threads():
 Similar performance was shown by the simpler approach
 of having a global lock on the output file,
 but limiting the number of workers through ThreadPoolExecutor
-in order to reduce lock contention.
 '''
 def run_threads_pool():
     global_lock = threading.Lock()
