@@ -1,42 +1,55 @@
-import json
-
-import requests
-
-N_REQUESTS = 77
-N_WORKERS = 77
-
-base_url = 'https://jsonplaceholder.typicode.com/posts/'
-
+from concurrent.futures import ThreadPoolExecutor
 import threading
 import time
+from worker_fns import writer, worker_with_separate_files, worker_with_global_lock
 
-global_lock = threading.Lock()
+N_REQUESTS = 77
+N_WORKERS = 25
+BASE_URL = 'https://jsonplaceholder.typicode.com/posts/'
 
-def worker(i):
-    url = f'{base_url}/{i}'
-    response = requests.get(url)
-    if response.status_code == 200:
-        data = response.json()
-        with global_lock:
-            with open("result", "a+") as file:
-                json.dump(data, file, indent=4)
-                file.write(",\n")
-    else:
-        print(f'Error: {response.status_code}')
+'''
+Since blocking on writing into a single file was a bottleneck,
+the approach of using a producer-consumer pattern was tried,
+removing the need for a global lock by having the workers
+write into separate files, and having their output assembled
+by a single writer thread that waits on a queue.
+'''
+def run_threads():
+    threads = []
 
-threads = []
+    writer_thread = threading.Thread(target=writer, args=(N_REQUESTS,))
+    threads.append(writer_thread)
+    writer_thread.start()
+
+    for i in range(N_REQUESTS):
+        url = f'{BASE_URL}/{i + 1}'
+        worker_thread = threading.Thread(
+            target=worker_with_separate_files,
+            args=(i + 1, url)
+        )
+        threads.append(worker_thread)
+        worker_thread.start()
+
+    for thread in threads:
+        thread.join()
+
+
+'''
+Similar performance was shown by the simpler approach
+of having a global lock on the output file,
+but limiting the number of workers through ThreadPoolExecutor
+in order to reduce lock contention.
+'''
+def run_threads_pool():
+    global_lock = threading.Lock()
+    with ThreadPoolExecutor(max_workers=N_WORKERS) as executor:
+        for i in range(N_REQUESTS):
+            url = f'{BASE_URL}/{i + 1}'
+            executor.submit(worker_with_global_lock, url, global_lock)
+
 
 start_time = time.time()
-
-for i in range(N_WORKERS):
-    t = threading.Thread(target=worker, args=(i + 1,))
-    threads.append(t)
-    t.start()
-
-for t in threads:
-    t.join()
-
+run_threads()
 end_time = time.time()
 
-print("All workers have finished. Time: ", end_time - start_time)
-
+print(f"All workers have finished. Time: {end_time - start_time:.2f} seconds")
