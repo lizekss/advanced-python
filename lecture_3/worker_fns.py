@@ -48,6 +48,6 @@ def writer(num_workers):
             # Delete the file after processing
             os.remove(filename)
 
-            if count == num_workers:  # Sentinel value to stop the writer thread
+            if count == num_workers:
                 break
         file.write(']')
