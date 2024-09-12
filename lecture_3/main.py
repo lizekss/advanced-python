@@ -19,8 +19,8 @@ def worker(i):
         data = response.json()
         with global_lock:
             with open("result", "a+") as file:
-                file.write(json.dumps(data))
-                file.write("\n")
+                json.dump(data, file, indent=4)
+                file.write(",\n")
     else:
         print(f'Error: {response.status_code}')
 
