@@ -14,6 +14,8 @@ removing the need for a global lock by having the workers
 write into separate files, and having their output assembled
 by a single writer thread that waits on a queue.
 '''
+
+
 def run_threads():
     threads = []
 
@@ -39,6 +41,8 @@ Similar performance was shown by the simpler approach
 of having a global lock on the output file,
 but limiting the number of workers through ThreadPoolExecutor
 '''
+
+
 def run_threads_pool():
     global_lock = threading.Lock()
     with ThreadPoolExecutor(max_workers=N_WORKERS) as executor:

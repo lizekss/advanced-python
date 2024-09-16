@@ -6,6 +6,7 @@ import aiofiles
 
 file_queue = asyncio.Queue()
 
+
 async def worker_with_separate_files(index, session, url):
     url = f'{url}/{index}'
     async with session.get(url) as response:
@@ -19,6 +20,7 @@ async def worker_with_separate_files(index, session, url):
             await file_queue.put(index)
         else:
             print(f'Error: {response.status} for {url}')
+
 
 async def writer(num_workers):
     count = 0
