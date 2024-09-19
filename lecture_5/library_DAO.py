@@ -47,6 +47,11 @@ class LibraryDAO:
     def close(self):
         self.conn.close()
 
+    '''
+    it doesn't seem very clean to add these specific functions to the DAO,
+    but i still feel like it's better to encapsulate all of the SQL logic here.
+    '''
+
     def get_book_with_most_pages(self):
         self.cursor.execute('SELECT * FROM Book ORDER BY Pages DESC LIMIT 1')
         return self.cursor.fetchone()
