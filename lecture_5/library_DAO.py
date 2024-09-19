@@ -45,3 +45,23 @@ class LibraryDAO:
 
     def close(self):
         self.conn.close()
+
+    def get_book_with_most_pages(self):
+        self.cursor.execute('SELECT * FROM Book ORDER BY Pages DESC LIMIT 1')
+        return self.cursor.fetchone()
+
+    def get_average_pages(self):
+        self.cursor.execute('SELECT AVG(Pages) FROM Book')
+        return self.cursor.fetchone()[0]
+
+    def get_youngest_author(self):
+        self.cursor.execute('SELECT * FROM Author ORDER BY BirthDate DESC LIMIT 1')
+        return self.cursor.fetchone()
+
+    def get_author_without_book(self):
+        self.cursor.execute('''
+            SELECT * FROM Author 
+            WHERE ID NOT IN (SELECT DISTINCT AuthorID FROM Book)
+            LIMIT 1
+        ''')
+        return self.cursor.fetchone()
