@@ -7,10 +7,11 @@ N_BOOKS = 1000
 
 fake = faker.Faker()
 
+# create DAO instance
 dao = LibraryDAO('library.db')
 
+
 def add_random_author():
-    # Generate a random first name, last name, birthdate, and birthplace
     first_name = fake.first_name()
     last_name = fake.last_name()
     birth_date = fake.date_between(start_date='-100y', end_date='-40y')
@@ -19,16 +20,18 @@ def add_random_author():
 
     dao.insert_author(first_name, last_name, birth_date, birth_place)
 
+
 def add_random_book(n_authors):
-    # Generate a random title, category, number of pages, publication date, and author ID
     title = fake.catch_phrase()
     category = fake.word(ext_word_list=None)
     pages = random.randint(100, 1000)
     publication_date = fake.date_between(start_date='-20y', end_date='today')
-    publication_date = publication_date.strftime('%Y-%m-%d')  # Convert date to string
+    publication_date = publication_date.strftime(
+        '%Y-%m-%d')  # Convert date to string
     author_id = random.randint(1, n_authors)
 
     dao.insert_book(title, category, pages, publication_date, author_id)
+
 
 for _ in range(N_AUTHORS):
     add_random_author()
@@ -46,5 +49,5 @@ if author_without_book is not None:
 else:
     print('All authors have at least one book.')
 
-# Close the connection
+# close the connection
 dao.close()

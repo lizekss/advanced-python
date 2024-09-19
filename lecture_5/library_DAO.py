@@ -1,5 +1,6 @@
 import sqlite3
 
+
 class LibraryDAO:
     def __init__(self, db_file):
         self.conn = sqlite3.connect(db_file)
@@ -55,7 +56,8 @@ class LibraryDAO:
         return self.cursor.fetchone()[0]
 
     def get_youngest_author(self):
-        self.cursor.execute('SELECT * FROM Author ORDER BY BirthDate DESC LIMIT 1')
+        self.cursor.execute(
+            'SELECT * FROM Author ORDER BY BirthDate DESC LIMIT 1')
         return self.cursor.fetchone()
 
     def get_author_without_book(self):
