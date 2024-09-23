@@ -8,7 +8,7 @@ To run this project, you will need the SQLite3, SQLAlchemy and Faker libraries.
 ## Description
 This project uses the DAO (Data Access Object) Design Pattern, in order to separate the data persistence logic in a separate layer.
 The main class in this project is LibraryDAO, which encapsulates all interactions with the database.
-The project provides two implementations of the abstract LibraryDAO class: `SQLiteDAO` and `SQLALchemyDAO`
+The project provides two implementations of the abstract LibraryDAO class: `SQLiteDAO` and `SQLAlchemyDAO`
 
 ## Features
 The LibraryDAO classes provide the following methods:
