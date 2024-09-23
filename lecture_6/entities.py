@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, ForeignKey
+from sqlalchemy import Column, Integer, String, ForeignKey, Date
 from sqlalchemy.orm import relationship, declarative_base
 
 Base = declarative_base()
@@ -11,7 +11,7 @@ class Book(Base):
     title = Column(String)
     category = Column(String)
     pages = Column(Integer)
-    publication_date = Column(String)
+    publication_date = Column(Date)
     author_id = Column(Integer, ForeignKey('Author.id'))
 
     def __repr__(self):
@@ -24,7 +24,7 @@ class Author(Base):
     id = Column(Integer, primary_key=True)
     first_name = Column(String)
     last_name = Column(String)
-    birth_date = Column(String)
+    birth_date = Column(Date)
     birth_place = Column(String)
 
     books = relationship('Book', backref='author')
