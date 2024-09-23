@@ -12,7 +12,7 @@ The project provides two implementations of the abstract LibraryDAO class: `SQLi
 
 ## Features
 The LibraryDAO classes provide the following methods:
-- `insert_author(name, birth_date, bio)`: Inserts a new author into the Author table.
+- `insert_author(first_name, last_name, birth_date, birth_place)`: Inserts a new author into the Author table.
 - `insert_book(title, category, pages, publication_date, author_id)`: Inserts a new book into the Book table.
 - `get_book_with_most_pages()`: Returns the book with the most pages.
 - `get_average_pages()`: Returns the average number of pages in all books.
