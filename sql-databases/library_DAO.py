@@ -38,7 +38,7 @@ class LibraryDAO(ABC):
         pass
 
 
-class SQLLiteDAO(LibraryDAO):
+class SQLiteDAO(LibraryDAO):
     def __init__(self, db_file):
         self.conn = sqlite3.connect(db_file)
         self.cursor = self.conn.cursor()
@@ -111,7 +111,7 @@ class SQLLiteDAO(LibraryDAO):
         return self.cursor.fetchone()
 
 
-class SQLAlchemyDAO:
+class SQLAlchemyDAO(LibraryDAO):
     def __init__(self, db_file):
         engine = create_engine(f'sqlite:///{db_file}')
         Base.metadata.create_all(engine)

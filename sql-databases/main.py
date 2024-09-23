@@ -1,4 +1,4 @@
-from library_DAO import SQLLiteDAO, SQLAlchemyDAO
+from library_DAO import SQLiteDAO, SQLAlchemyDAO
 import random
 import faker
 
