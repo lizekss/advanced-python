@@ -1,4 +1,6 @@
 import sqlite3
+from abc import ABC, abstractmethod
+
 from sqlalchemy import create_engine, func
 from sqlalchemy.exc import NoResultFound
 from sqlalchemy.orm import sessionmaker
@@ -6,7 +8,37 @@ from sqlalchemy.orm import sessionmaker
 from entities import Book, Author, Base
 
 
-class SQLLiteDAO:
+class LibraryDAO(ABC):
+    @abstractmethod
+    def insert_author(self, first_name, last_name, birth_date, birth_place):
+        pass
+
+    @abstractmethod
+    def insert_book(self, title, category, pages, publication_date, author):
+        pass
+
+    @abstractmethod
+    def get_book_with_most_pages(self):
+        pass
+
+    @abstractmethod
+    def get_average_pages(self):
+        pass
+
+    @abstractmethod
+    def get_youngest_author(self):
+        pass
+
+    @abstractmethod
+    def get_author_without_book(self):
+        pass
+
+    @abstractmethod
+    def close(self):
+        pass
+
+
+class SQLLiteDAO(LibraryDAO):
     def __init__(self, db_file):
         self.conn = sqlite3.connect(db_file)
         self.cursor = self.conn.cursor()
