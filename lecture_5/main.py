@@ -1,4 +1,4 @@
-from library_DAO import LibraryDAO
+from library_DAO import SQLLiteDAO, SQLAlchemyDAO
 import random
 import faker
 
@@ -8,14 +8,13 @@ N_BOOKS = 1000
 fake = faker.Faker()
 
 # create DAO instance
-dao = LibraryDAO('library.db')
+dao = SQLAlchemyDAO('library.db')
 
 
 def add_random_author():
     first_name = fake.first_name()
     last_name = fake.last_name()
     birth_date = fake.date_between(start_date='-100y', end_date='-40y')
-    birth_date = birth_date.strftime('%Y-%m-%d')  # Convert date to string
     birth_place = fake.city()
 
     dao.insert_author(first_name, last_name, birth_date, birth_place)
@@ -26,8 +25,6 @@ def add_random_book(n_authors):
     category = fake.word(ext_word_list=None)
     pages = random.randint(100, 1000)
     publication_date = fake.date_between(start_date='-20y', end_date='today')
-    publication_date = publication_date.strftime(
-        '%Y-%m-%d')  # Convert date to string
     author_id = random.randint(1, n_authors)
 
     dao.insert_book(title, category, pages, publication_date, author_id)
