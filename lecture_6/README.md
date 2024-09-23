@@ -1,7 +1,7 @@
 # SQL Database Project
-This project is a simple Python application that uses SQLite3 to manage a library database. The database consists of two tables: Author and Book. The Author table stores information about authors, and the Book table stores information about books.
+This project is a simple Python application that uses SQLAlchemy to manage a library database. The database consists of two tables: Author and Book. The Author table stores information about authors, and the Book table stores information about books.
 ## Getting Started
-To run this project, you will need the sqlite3 and faker libraries.
+To run this project, you will need the SQLAlchemy and faker libraries.
 
 `pip install requirements.txt`
 
