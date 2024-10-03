@@ -36,13 +36,16 @@ class StudentDataAnalyzer:
     def get_improving_students(self):
         self.df['Average_Score'] = self.df[self.subjects].mean(axis=1)
         student_scores = self.df.groupby(['Student', 'Semester'])[
-            'Average_Score'].mean()
+            'Average_Score'].mean().reset_index()
 
-        improving_students = []
+        # calculate the difference between the average score of the current semester and the previous semester
+        student_scores['Score_Difference'] = student_scores.groupby('Student')[
+            'Average_Score'].diff()
 
-        for student in self.df['Student'].unique():
-            scores = student_scores[student]
-            if all(scores[i] <= scores[i + 1] for i in range(len(scores) - 1)):
-                improving_students.append(student)
+        # find the students who have all score differences >= 0
+        improved_students = student_scores.groupby(
+            'Student')['Score_Difference'].min()
+        improved_students = improved_students[improved_students >= 0].index.tolist(
+        )
 
-        return improving_students
+        return improved_students
