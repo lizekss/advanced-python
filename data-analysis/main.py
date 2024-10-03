@@ -18,9 +18,7 @@ average_total_scores = analyzer.get_average_total_scores()
 
 
 def write_to_excel(data):
-    # average_semester_scores.reset_index()
-    data.to_excel(
-        'average_scores_per_semester.xlsx', index=False)
+    data.to_excel(EXCEL_FILENAME, index=False)
 
 
 def display_statistics():
