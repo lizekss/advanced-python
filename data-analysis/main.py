@@ -38,5 +38,5 @@ def show_plots():
 
 
 display_statistics()
-write_to_excel(average_total_scores.reset_index())
+write_to_excel(average_semester_scores.reset_index())
 show_plots()
