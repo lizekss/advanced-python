@@ -1,4 +1,3 @@
-import numpy as np
 import pandas as pd
 
 
@@ -24,7 +23,7 @@ class StudentDataAnalyzer:
         return highest_student
 
     def get_hardest_subject(self):
-        average_subject_scores = self.df[self.subjects].apply(np.mean)
+        average_subject_scores = self.df[self.subjects].mean()
         hardest_subject = average_subject_scores.idxmin()
         return hardest_subject
 
