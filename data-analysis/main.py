@@ -15,7 +15,8 @@ average_semester_scores = df.groupby('Semester')[subjects].mean()
 print(average_semester_scores)
 
 df['Average_Score'] = df[subjects].mean(axis=1)
-highest_average_score_student = df.groupby('Student')['Average_Score'].mean().idxmax()
+highest_average_score_student = df.groupby(
+    'Student')['Average_Score'].mean().idxmax()
 print(highest_average_score_student)
 
 average_subject_scores = df[subjects].apply(np.mean)
@@ -23,7 +24,8 @@ hardest_subject = average_subject_scores.idxmin()
 print(hardest_subject)
 
 
-average_semester_scores.to_excel('average_scores_per_semester.xlsx', index=False)
+average_semester_scores.reset_index().to_excel(
+    'average_scores_per_semester.xlsx', index=False)
 
 average_semester_scores.plot(kind='bar', figsize=(10, 7))
 plt.title('Average Scores by Subject for All Semesters')
