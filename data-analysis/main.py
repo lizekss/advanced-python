@@ -1,45 +1,42 @@
-import pandas as pd
-import numpy as np
 import matplotlib.pyplot as plt
 
-df = pd.read_csv('student_scores_random_names.csv')
-# df.dropna()
+from analysis import StudentDataAnalyzer
+from plotting import *
 
-print(df.head())
+CSV_FILENAME = 'student_scores_random_names.csv'
+EXCEL_FILENAME = 'average_scores_per_semester.xlsx'
+SUBJECTS = ['Math', 'Physics', 'Chemistry', 'Biology', 'English']
 
-subjects = ['Math', 'Physics', 'Chemistry', 'Biology', 'English']
-failed_students = df[df[subjects].lt(50).any(axis=1)]['Student'].unique()
-print(failed_students)
+analyzer = StudentDataAnalyzer(CSV_FILENAME, SUBJECTS)
+analyzer.clean_data()
 
-average_semester_scores = df.groupby('Semester')[subjects].mean()
-print(average_semester_scores)
-
-df['Average_Score'] = df[subjects].mean(axis=1)
-highest_average_score_student = df.groupby(
-    'Student')['Average_Score'].mean().idxmax()
-print(highest_average_score_student)
-
-average_subject_scores = df[subjects].apply(np.mean)
-hardest_subject = average_subject_scores.idxmin()
-print(hardest_subject)
+failed_students = analyzer.get_failed_students()
+average_semester_scores = analyzer.get_avg_semester_scores()
+highest_avg_student = analyzer.get_highest_avg_student()
+hardest_subject = analyzer.get_hardest_subject()
+average_total_scores = analyzer.get_average_total_scores()
 
 
-average_semester_scores.reset_index().to_excel(
-    'average_scores_per_semester.xlsx', index=False)
+def write_to_excel(data):
+    # average_semester_scores.reset_index()
+    data.to_excel(
+        'average_scores_per_semester.xlsx', index=False)
 
-average_semester_scores.plot(kind='bar', figsize=(10, 7))
-plt.title('Average Scores by Subject for All Semesters')
-plt.xlabel('Semester')
-plt.ylabel('Average Score')
-plt.legend(title='Subjects', loc='upper left')
 
-df['Total_Score'] = df[subjects].sum(axis=1)
-average_total_scores = df.groupby('Semester')['Total_Score'].mean()
+def display_statistics():
+    print(f'Failed students list: {failed_students}')
+    print('Average semester scores:')
+    print(average_semester_scores)
+    print(f'Student with highest average score: {highest_avg_student}')
+    print(f'Hardest subject: {hardest_subject}')
 
-plt.figure()
-average_total_scores.plot(kind='line', figsize=(10, 7), marker='o')
-plt.title('Average Total Score per Semester')
-plt.xlabel('Semester')
-plt.ylabel('Average Total Score')
-plt.grid(True)
-plt.show()
+
+def show_plots():
+    plot_average_semester_scores(average_semester_scores)
+    plt.figure()
+    plot_average_total_scores(average_total_scores)
+
+
+display_statistics()
+write_to_excel(average_total_scores.reset_index())
+show_plots()
