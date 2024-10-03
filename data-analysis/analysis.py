@@ -4,7 +4,7 @@ import pandas as pd
 
 class StudentDataAnalyzer:
     def __init__(self, csv_file, subjects_list):
-        self.df = pd.read_csv('student_scores_random_names.csv')
+        self.df = pd.read_csv(csv_file)
         self.subjects = subjects_list
 
     def clean_data(self):
