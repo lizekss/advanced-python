@@ -15,6 +15,7 @@ average_semester_scores = analyzer.get_avg_semester_scores()
 highest_avg_student = analyzer.get_highest_avg_student()
 hardest_subject = analyzer.get_hardest_subject()
 average_total_scores = analyzer.get_average_total_scores()
+improving_students = analyzer.get_improving_students()
 
 
 def write_to_excel(data):
@@ -27,6 +28,8 @@ def display_statistics():
     print(average_semester_scores)
     print(f'Student with highest average score: {highest_avg_student}')
     print(f'Hardest subject: {hardest_subject}')
+    # BONUS
+    # print(f'Students that improved their scores: {improving_students}')
 
 
 def show_plots():

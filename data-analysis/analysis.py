@@ -32,3 +32,17 @@ class StudentDataAnalyzer:
         df['Total_Score'] = df[self.subjects].sum(axis=1)
         average_total = df.groupby('Semester')['Total_Score'].mean()
         return average_total
+
+    def get_improving_students(self):
+        self.df['Average_Score'] = self.df[self.subjects].mean(axis=1)
+        student_scores = self.df.groupby(['Student', 'Semester'])[
+            'Average_Score'].mean()
+
+        improving_students = []
+
+        for student in self.df['Student'].unique():
+            scores = student_scores[student]
+            if all(scores[i] <= scores[i + 1] for i in range(len(scores) - 1)):
+                improving_students.append(student)
+
+        return improving_students
