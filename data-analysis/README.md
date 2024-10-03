@@ -7,6 +7,7 @@ This project uses the following Python libraries:
 - pandas
 - numpy
 - matplotlib
+
 You can install these packages using pip:
 
 `pip install requirements.txt`
